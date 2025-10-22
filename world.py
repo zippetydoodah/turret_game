@@ -344,24 +344,26 @@ class World:
         used_power = 0
 
         for g in self.generators:
-            used_power += g.generator.required_power
-            cash.money += g.generator.update(total_power)
-            total_power -= g.generator.required_power
+            used_power += g.generator.power_bar.total_power
+            g.generator.update_power(total_power)
+            cash.money += g.generator.get_reward(total_power)
+            total_power -= g.generator.power_bar.total_power
 
         for h in self.healers:
-            used_power += h.healer.required_power
-            to_add = h.healer.update(total_power)
+            used_power += h.healer.power_bar.total_power
+            h.healer.update_power(total_power)
+            to_add = h.healer.get_reward(total_power)
 
             if to_add:
                 self.heal_turret(h.healer.reward,h)
 
-            total_power -= h.healer.required_power
+            total_power -= h.healer.power_bar.total_power
         
         for t in self.turrets:
-            if t.turret.required_power:
-                used_power += t.turret.required_power
-                to_add = t.turret.update(total_power)
-                total_power -= t.turret.required_power
+            if t.turret.power_bar:
+                used_power += t.turret.power_bar.total_power
+                t.turret.update_power(total_power)
+                total_power -= t.turret.power_bar.total_power
 
         power.usage = used_power
 

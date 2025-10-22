@@ -17,13 +17,6 @@ class Basic_Turret(Structure):
         self.base_range = range
         self.range = range
 
-        if power:
-            self.required_power = power
-            self.power = 0
-        else:
-            self.power = None
-            self.required_power = None
-
         self.base_bullet_speed = self.ammo((0,0),(0,0)).speed
 
         self.elapsed_cooldown_time = None   
@@ -46,22 +39,16 @@ class Basic_Turret(Structure):
         bullet_speed = self.base_bullet_speed + self.UI.slots[0].level
 
         if not self.speed_timer and not self.elapsed_fire_time:
-            if self.required_power and self.power == self.required_power:
+            if self.power_bar and self.power_bar.power == self.power_bar.total_power:
                 self.bullets_fired.append(self.ammo(self.centre_pos,target_pos,bullet_speed))
                 self.speed_timer = time.time()
                 
-            elif not self.required_power:
+            elif not self.power_bar:
                 self.bullets_fired.append(self.ammo(self.centre_pos,target_pos,bullet_speed))
                 self.speed_timer = time.time()
 
         if self.speed_timer and time.time() - self.speed_timer > self.speed:
             self.speed_timer = None
-
-    def update(self,power):
-        if power >= self.required_power:
-            self.power = 5
-        else:
-            self.power = 0
     
     def render(self,screen):
         

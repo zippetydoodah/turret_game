@@ -18,7 +18,9 @@ class HighlightedTile:
                 pygame.draw.circle(range_surf,(123,123,123,100),(self.tile.turret.range,self.tile.turret.range),self.tile.turret.range)
                 screen.blit(range_surf,((self.tile.pos.x + TILE_SIZE/2) - self.tile.turret.range, (self.tile.pos.y + TILE_SIZE/2) - self.tile.turret.range))
                 self.tile.turret.health_bar.render(screen,True)
-                
+                if self.tile.turret.power_bar:
+                    self.tile.turret.power_bar.render(screen,True)
+
             if self.tile.mine:
                 range_surf = pygame.Surface((self.tile.mine.range *2, self.tile.mine.range*2), pygame.SRCALPHA)
                 pygame.draw.circle(range_surf,(123,123,123,100),(self.tile.mine.range,self.tile.mine.range),self.tile.mine.range)
@@ -29,16 +31,18 @@ class HighlightedTile:
                 pygame.draw.circle(range_surf,(123,123,123,100),(self.tile.healer.range,self.tile.healer.range),self.tile.healer.range)
                 screen.blit(range_surf,((self.tile.pos.x + TILE_SIZE/2) - self.tile.healer.range, (self.tile.pos.y + TILE_SIZE/2) - self.tile.healer.range))
 
+                self.tile.healer.health_bar.render(screen,True)
+                self.tile.generator.power_bar.render(screen,True)
+
             if self.tile.wall:
                 self.tile.wall.health_bar.render(screen,True)
 
             if self.tile.generator:
                 self.tile.generator.health_bar.render(screen,True)
+                self.tile.generator.power_bar.render(screen,True)
 
             if self.tile.plant:
-                self.tile.plant.health_bar.render(screen,True)
-            if self.tile.healer:
-                self.tile.healer.health_bar.render(screen,True)
+                self.tile.plant.health_bar.render(screen,True)            
 
             self.tile_highlight_rect.topleft = self.tile.pos
             screen.blit(self.image, self.tile_highlight_rect)

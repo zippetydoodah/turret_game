@@ -11,32 +11,26 @@ class Generator(Structure):
         self.timer = None
         self.base_reward = reward
         self.reward = reward
-        self.required_power = power
-        self.power = 0
 
     def upgrade(self):
         if Increased_generation_upgrade in self.upgrades:
             self.reward = self.base_reward * self.UI.slots[0].level
 
-    def update(self,power):
-        if power >= self.required_power:
-            self.power = 10
-        else:
-            self.power = 0
+    def get_reward(self,power):
 
         if not self.timer:
             self.timer = time.time()
 
         if time.time() - self.timer > self.speed:
             self.timer = time.time()
-            if power >= self.required_power:
-                self.power = 10
+            if power >= self.power_bar.total_power:
+                self.power_bar.power = self.power_bar.total_power
                 return self.reward
             
         return 0
     
     def render_extra(self,screen):
-        if self.power == self.required_power:   
+        if self.power_bar.power == self.power_bar.total_power:   
             font = pygame.font.SysFont('Arial', 25)
             count_text = font.render("Timer:%s/%s"%(int(time.time() - self.timer),self.speed), 1, (0,0,0), None)
             count_text_rect = count_text.get_rect()
@@ -44,7 +38,7 @@ class Generator(Structure):
             screen.blit(count_text,count_text_rect)
 
         font = pygame.font.SysFont('Arial', 25)
-        count_text = font.render("Power:%s/%s"%(self.power,self.required_power), 1, (0,0,0), None)
+        count_text = font.render("Power:%s/%s"%(self.power_bar.power,self.power_bar.total_power), 1, (0,0,0), None)
         count_text_rect = count_text.get_rect()
         count_text_rect.topleft = (WINDOW_WIDTH - 280,300)
         screen.blit(count_text,count_text_rect)

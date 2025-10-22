@@ -4,7 +4,7 @@ from background import *
 import time
 
 class Upgrades_UI:
-    def __init__(self,upgrades_list,turret_health):
+    def __init__(self,upgrades_list,health,power):
         self.slots = []
         self.upgrade_list = upgrades_list
         self.background = Background("turret_bg",(WINDOW_WIDTH - 300,150),(210,420))
@@ -16,7 +16,8 @@ class Upgrades_UI:
             self.slots.append(upgrade_instance)
             y += 55
 
-        self.turret_health = turret_health
+        self.health_bar = health
+        self.power_bar = power
 
     def buy_item(self,event,cash,chat):
         mouse_pos = pygame.mouse.get_pos()
@@ -56,13 +57,13 @@ class Upgrades_UI:
             Title_text_rect.topleft = (WINDOW_WIDTH - 280,170)
             screen.blit(Title_text,Title_text_rect)
 
-        health_text = font.render("Health:%s/%s"%(self.turret_health.health,self.turret_health.total_health), 1, (0,0,0), None)
+        health_text = font.render("Health:%s/%s"%(self.health_bar.health,self.health_bar.total_health), 1, (0,0,0), None)
         health_text_rect = health_text.get_rect()
         health_text_rect.topleft = (WINDOW_WIDTH - 280,440)
         screen.blit(health_text,health_text_rect)
         hitrect1 = pygame.Rect(WINDOW_WIDTH - 280,465,100, 25)
 
-        hitrect = pygame.Rect(WINDOW_WIDTH - 280,465, (self.turret_health.health * self.turret_health.multiplier), 25)
+        hitrect = pygame.Rect(WINDOW_WIDTH - 280,465, (self.health_bar.health * self.health_bar.multiplier), 25)
         pygame.draw.rect(screen, (255, 0, 0),hitrect1)
         pygame.draw.rect(screen, (0, 255, 0), hitrect)
 
