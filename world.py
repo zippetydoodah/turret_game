@@ -356,6 +356,12 @@ class World:
                 self.heal_turret(h.healer.reward,h)
 
             total_power -= h.healer.required_power
+        
+        for t in self.turrets:
+            if t.turret.required_power:
+                used_power += t.turret.required_power
+                to_add = t.turret.update(total_power)
+                total_power -= t.turret.required_power
 
         power.usage = used_power
 

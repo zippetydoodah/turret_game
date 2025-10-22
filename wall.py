@@ -5,7 +5,7 @@ from upgrades import *
 
 class Wall(Structure):
     def __init__(self,pos,health,name):
-        super().__init__(pos,health,name,[Increased_health_upgrade])
+        super().__init__(pos,health,None,name,[Increased_health_upgrade])
 
     def upgrade(self):
         self.health_bar.total_health =  self.health_bar.initial_health + 5 * (self.UI.slots[0].level - 1)

@@ -6,7 +6,7 @@ import time
 
 class Healer(Structure):
     def __init__(self,pos,health,name,speed,reward,range,power):
-        super().__init__(pos,health,name,[])
+        super().__init__(pos,health,power,name,[])
 
         self.speed = speed
         self.timer = None

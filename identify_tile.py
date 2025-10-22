@@ -11,4 +11,5 @@ IDENTIFY_TILE = {
     "generator":Generator_tile,
     "power_plant":Power_plant_tile,
     "healer":Healer_tile,
+    "laser_turret":Laser_turret_tile,
 }

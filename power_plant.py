@@ -6,7 +6,7 @@ import time
 
 class Power_plant(Structure):
     def __init__(self,pos,health,name,power):
-        super().__init__(pos,health,name,[])
+        super().__init__(pos,health,None,name,[])
         self.power = power
         
     def upgrade(self):

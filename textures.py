@@ -80,6 +80,18 @@ class Flame_turret_tile(Tile):
         self.load_image()
         super().__init__(x, y,"flame_turret",IMAGES["flame_turret"],Flame_turret_tile.tile_image,turret=Flame_turret)
 
+class Laser_turret_tile(Tile):
+    tile_image = None
+    @staticmethod
+    def load_image():
+        if  Laser_turret_tile.tile_image is None:
+            image = getImage("laser_turret")
+            Laser_turret_tile.tile_image = pygame.transform.scale(image, (TILE_SIZE, TILE_SIZE))
+
+    def __init__(self, x, y):
+        self.load_image()
+        super().__init__(x, y,"laser_turret",IMAGES["laser_turret"],Laser_turret_tile.tile_image,turret=Laser_turret)
+
 class Mine_tile(Tile):
     tile_image = None
     @staticmethod

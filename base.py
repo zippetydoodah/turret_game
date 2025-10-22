@@ -3,7 +3,7 @@ from structure import *
 
 class Base(Structure):
     def __init__(self,pos):
-        super().__init__(pos,100,"base",[])
+        super().__init__(pos,100,None,"base",[])
         
     def upgrade(self):
         pass

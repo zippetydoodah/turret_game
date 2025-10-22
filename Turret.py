@@ -7,19 +7,23 @@ from items import *
 from structure import *
 
 class Basic_Turret(Structure):
-    def __init__(self,centre_pos,pos,speed, ammo, name, range,cooldown,fire_time,health,upgrades):
-        super().__init__(pos,health,name,upgrades)
+    def __init__(self,centre_pos,pos,speed, ammo, name, range,health,power = None,upgrades = []):
+        super().__init__(pos,health,power,name,upgrades)
 
         self.centre_pos = centre_pos
         self.base_speed = speed
         self.speed = speed
-
         self.ammo = ammo
         self.base_range = range
         self.range = range
 
-        self.cooldown = cooldown
-        self.fire_time = fire_time 
+        if power:
+            self.required_power = power
+            self.power = 0
+        else:
+            self.power = None
+            self.required_power = None
+
         self.base_bullet_speed = self.ammo((0,0),(0,0)).speed
 
         self.elapsed_cooldown_time = None   
@@ -42,12 +46,23 @@ class Basic_Turret(Structure):
         bullet_speed = self.base_bullet_speed + self.UI.slots[0].level
 
         if not self.speed_timer and not self.elapsed_fire_time:
-            self.bullets_fired.append(self.ammo(self.centre_pos,target_pos,bullet_speed))
-            self.speed_timer = time.time()
+            if self.required_power and self.power == self.required_power:
+                self.bullets_fired.append(self.ammo(self.centre_pos,target_pos,bullet_speed))
+                self.speed_timer = time.time()
+                
+            elif not self.required_power:
+                self.bullets_fired.append(self.ammo(self.centre_pos,target_pos,bullet_speed))
+                self.speed_timer = time.time()
 
-        if time.time() - self.speed_timer > self.speed:
+        if self.speed_timer and time.time() - self.speed_timer > self.speed:
             self.speed_timer = None
 
+    def update(self,power):
+        if power >= self.required_power:
+            self.power = 5
+        else:
+            self.power = 0
+    
     def render(self,screen):
         
         to_remove = []
@@ -62,10 +77,13 @@ class Basic_Turret(Structure):
         
 class Flame_turret(Basic_Turret):
     def __init__(self,centre_pos,pos):
-        super().__init__(centre_pos,pos,speed = 0.5, ammo = Flame_ammo,name ="flame_turret", range = 100, cooldown = 2,fire_time = 6,health = 40,upgrades = [Faster_bullets_upgrade,Increased_health_upgrade,Fire_rate_upgrade,Increased_range_upgrade])
+        super().__init__(centre_pos,pos,speed = 0.5, ammo = Flame_ammo,name ="flame_turret", range = 100,health = 40,upgrades = [Faster_bullets_upgrade,Increased_health_upgrade,Fire_rate_upgrade,Increased_range_upgrade])
 # every 0.5 seconds it fires a bullet
 # fires for 6 seconds in total and then has 2 second cooldown time before firing again.
-
 class Machine_gun(Basic_Turret):
     def __init__(self,centre_pos,pos):
-        super().__init__(centre_pos,pos,speed = 0.3, ammo = Machine_gun_ammo,name ="machine_gun_turret",range = 300, cooldown = 2,fire_time = 6,health = 20,upgrades = [Faster_bullets_upgrade,Increased_health_upgrade,Fire_rate_upgrade,Increased_damage_upgrade])
+        super().__init__(centre_pos,pos,speed = 0.3, ammo = Machine_gun_ammo,name ="machine_gun_turret",range = 300,health = 20,upgrades = [Faster_bullets_upgrade,Increased_health_upgrade,Fire_rate_upgrade,Increased_damage_upgrade])
+
+class Laser_turret(Basic_Turret):
+    def __init__(self,centre_pos,pos):
+        super().__init__(centre_pos,pos,speed = 0.15, ammo = Laser_ammo,name ="laser_turret",range = 150,health = 50,power = 5,upgrades = [Faster_bullets_upgrade,Increased_health_upgrade,Fire_rate_upgrade,Increased_damage_upgrade])

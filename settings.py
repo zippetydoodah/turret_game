@@ -5,7 +5,6 @@ IMAGE_FOLDER = "assets/"
 
 TILE_SIZE = 25
 
-
 HOTBAR_SLOTS = 5
 STACK_SIZE = 1
 WAIT_BETWEEN_WAVES = 15
@@ -26,8 +25,12 @@ IMAGES = {
 
     "bullet":"bullet.png",
     "flame":"fire_ball.png",
+    "laser":"laser.png",
+
     "flame_turret":"flame_turret_1.png",
     "machine_gun_turret":"turret_2.png",
+    "laser_turret":"laser_turret.png",
+
     "generator":"generator.png",
     "power_plant":"power_plant.png",
     "healer":"healing_turret.png",

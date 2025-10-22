@@ -1,15 +1,23 @@
 from health_bar import *
+from power_bar import *
 from pygame import Vector2
 from upgrades import *
 
 class Structure:
-    def __init__(self,pos,health,name,upgrades):
+    def __init__(self,pos,health,power,name,upgrades):
         self.pos = pos
         self.name = name
         self.health = health
         self.upgrades = upgrades
         self.health_bar = Health_bar(health,Vector2(self.pos[0],self.pos[1]))
-       
+        if power:
+            self.power_bar = Power_bar(power,Vector2(self.pos[0],self.pos[1] - 5))
+        else:
+            self.power_bar = None
+        # make power bar like health as in just stored in structure class not in indiviual like turret.
+        # then when u do update just look at power_bar info rather than the data that would be held in that individual class.
+        # hold all power + health info here.but do keep the        
+        
         self.UI = Upgrades_UI(self.upgrades,self.health_bar)
 
         self.showing = False
@@ -42,6 +50,8 @@ class Structure:
         
         if self.showing:
             self.health_bar.render(screen,r = True)
+            if self.power_bar:
+                self.power_bar.render(screen,r = True)
             self.UI.render(screen)
             self.slot.render(screen)
 
@@ -50,3 +60,4 @@ class Structure:
 
     def render(self,screen):
         self.health_bar.render(screen)
+        self.power_bar.render(screen)

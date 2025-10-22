@@ -6,7 +6,7 @@ import time
 
 class Generator(Structure):
     def __init__(self,pos,health,name,speed,reward,power):
-        super().__init__(pos,health,name,[Increased_generation_upgrade])
+        super().__init__(pos,health,power,name,[Increased_generation_upgrade])
         self.speed = speed
         self.timer = None
         self.base_reward = reward

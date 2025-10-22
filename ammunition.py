@@ -24,6 +24,7 @@ class Base_ammunition:
         speed = self.speed
         if fast_forward.showing:
             speed = self.speed * 2
+
         self.pos.x += (self.dx / self.hyp * speed)
         self.pos.y += (self.dy / self.hyp * speed)
 
@@ -33,8 +34,13 @@ class Base_ammunition:
 
 class Flame_ammo(Base_ammunition):
     def __init__(self, pos,target,speed = 5):
-        super().__init__(pos, "flame",target,10,speed) # add other characteristics like speed direction and damage
+        super().__init__(pos, "flame",target,15,speed) # add other characteristics like speed direction and damage
+
+class Laser_ammo(Base_ammunition):
+    def __init__(self, pos,target,speed = 2):
+        super().__init__(pos,"laser",target,7,speed)
 
 class Machine_gun_ammo(Base_ammunition):
     def __init__(self, pos,target,speed = 5):
         super().__init__(pos,"bullet",target,2,speed) # add other characteristics like speed direction and damage
+        

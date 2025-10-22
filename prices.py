@@ -1,7 +1,8 @@
 
 prices = {
-    "flame_turret":50,
+    "flame_turret":20,
     "machine_gun_turret":5,
+    "laser_turret":50,
     "nuclear_bomb":1000,
     "double_drops":50,
     "freeze_time":100,
@@ -16,7 +17,8 @@ prices = {
 
 shop_slot_order = {
     1:"machine_gun_turret",
-    2:"flame_turret",
+    2:"laser_turret",
+    3:"flame_turret",
 }
 
 defence_slot_order = {

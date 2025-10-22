@@ -3,6 +3,7 @@ from items import *
 IDENTIFY_ITEM = {
     "flame_turret":Flame_turret_item,
     "machine_gun_turret":Machine_gun_turret_item,
+    "laser_turret":Laser_turret_item,
     "healer":Healer_item,
     "generator":Generator_turret,
     "power_plant":Power_plant_item,

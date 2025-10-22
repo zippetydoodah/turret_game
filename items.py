@@ -10,13 +10,17 @@ class Flame_turret_item(Item):
     def __init__(self,quantity):
         super().__init__(type = "flame_turret",quantity = quantity,placeable= True, range = 100)
 
+class Laser_turret_item(Item):
+    def __init__(self,quantity):
+        super().__init__(type = "laser_turret",quantity = quantity,placeable= True, range = 150)
+
 class Healer_item(Item):
     def __init__(self,quantity):
         super().__init__(type = "healer",quantity = quantity,placeable= True, range = 150)
 
 class Machine_gun_turret_item(Item):
     def __init__(self,quantity):
-        super().__init__(type = "machine_gun_turret",quantity = quantity,placeable = True, range = 300)
+        super().__init__(type = "machine_gun_turret",quantity = quantity,placeable = True, range = 200)
 
 class Generator_turret(Item):
     def __init__(self,quantity):
