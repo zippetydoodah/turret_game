@@ -49,9 +49,9 @@ class Zombie(Enemy):
 
 class Troll(Enemy):
     def __init__(self,pos,target):
-        super().__init__(pos,target,"troll",0.2,10,health= 250,drops = 15)
+        super().__init__(pos,target,"troll",0.4,10,health= 250,drops = 15)
 
 class Dragon(Enemy):
     def __init__(self,pos,target):
-        super().__init__(pos,target,"dragon",0.1,50,health = 1000,drops = 300)
+        super().__init__(pos,target,"dragon",0.3,50,health = 1000,drops = 300)
     

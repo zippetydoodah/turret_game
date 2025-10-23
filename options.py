@@ -32,13 +32,17 @@ class Options:
             self.exit_button.pressed(event)
             if self.settings_button.pressed(event):
                 settings.showing = not settings.showing
-                
+            if settings.showing and event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                settings.showing = False
+
             if self.achievements_button.pressed(event):
                 pass
 
             if self.chat_button.pressed(event):
+            
                 chat.showing = not chat.showing
-
+            if chat.showing and event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    chat.showing = False
         if self.exit_button.cooldown_time:
             self.exit = True
 

@@ -15,14 +15,10 @@ class Structure:
         else:
             self.power_bar = None
 
-        # make power bar like health as in just stored in structure class not in indiviual like turret.
-        # then when u do update just look at power_bar info rather than the data that would be held in that individual class.
-        # hold all power + health info here.but do keep the        
-        
-        self.UI = Upgrades_UI(self.upgrades,self.health_bar,self.power_bar)
+        self.UI = Upgrades_UI(self.name,self.upgrades,self.health_bar,self.power_bar)
 
         self.showing = False
-        self.slot = Slot((WINDOW_WIDTH - 280,500),image_size=50)
+        self.slot = Slot((WINDOW_WIDTH - 170,460),image_size=50)
         self.slot.item = Wrench(1)
 
     def update_power(self,power):
@@ -31,7 +27,6 @@ class Structure:
         else:
             self.power_bar.power = 0
         
-
     def inputs(self,event,mouse_pos,cash,chat):
         if self.showing:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:

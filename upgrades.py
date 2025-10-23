@@ -4,10 +4,13 @@ from background import *
 import time
 
 class Upgrades_UI:
-    def __init__(self,upgrades_list,health,power):
+    def __init__(self,name,upgrades_list,health,power):
         self.slots = []
         self.upgrade_list = upgrades_list
-        self.background = Background("turret_bg",(WINDOW_WIDTH - 300,150),(210,420))
+        
+        self.name = name
+        self.health_bar = health
+        self.power_bar = power
 
         x = WINDOW_WIDTH - 280
         y =  210
@@ -16,10 +19,10 @@ class Upgrades_UI:
             self.slots.append(upgrade_instance)
             y += 55
 
-        self.health_bar = health
-        self.power_bar = power
+        self.background = Background("turret_bg",(WINDOW_WIDTH - 300,150),(210,420))
+        self.font = pygame.font.SysFont('Arial', 25)
 
-    def buy_item(self,event,cash,chat):
+    def buy_item(self,event,cash,chat): 
         mouse_pos = pygame.mouse.get_pos()
         for slot in self.slots:
         
@@ -49,21 +52,38 @@ class Upgrades_UI:
         self.background.render(screen)
         for slot in self.slots:
             slot.render(screen)
-        font = pygame.font.SysFont('Arial', 25)
+
+        font = self.font
+        text = font.render(self.name, 1, (0,0,0), None)
+        text_rect = text.get_rect()
+        text_rect.topleft = (WINDOW_WIDTH - 280,160)
+        screen.blit(text,text_rect)
 
         if not self.upgrade_list == []:
             Title_text = font.render("Upgrades:", 1, (0,0,0), None)
             Title_text_rect = Title_text.get_rect()
-            Title_text_rect.topleft = (WINDOW_WIDTH - 280,170)
+            Title_text_rect.topleft = (WINDOW_WIDTH - 280,180)
             screen.blit(Title_text,Title_text_rect)
+
+        if self.power_bar:
+            power_text = font.render("Power:%s/%s"%(self.power_bar.power,self.power_bar.total_power), 1, (0,0,0), None)
+            power_text_rect = power_text.get_rect()
+            power_text_rect.topleft = (WINDOW_WIDTH - 280,490)
+            screen.blit(power_text,power_text_rect)
+
+            hitrect1 = pygame.Rect(WINDOW_WIDTH - 280,520,100, 15)
+            hitrect = pygame.Rect(WINDOW_WIDTH - 280,520, (self.power_bar.power * self.power_bar.multiplier), 15)
+            pygame.draw.rect(screen, (255, 0, 0),hitrect1)
+            pygame.draw.rect(screen, (255, 255, 0), hitrect)
+
 
         health_text = font.render("Health:%s/%s"%(self.health_bar.health,self.health_bar.total_health), 1, (0,0,0), None)
         health_text_rect = health_text.get_rect()
         health_text_rect.topleft = (WINDOW_WIDTH - 280,440)
         screen.blit(health_text,health_text_rect)
-        hitrect1 = pygame.Rect(WINDOW_WIDTH - 280,465,100, 25)
 
-        hitrect = pygame.Rect(WINDOW_WIDTH - 280,465, (self.health_bar.health * self.health_bar.multiplier), 25)
+        hitrect1 = pygame.Rect(WINDOW_WIDTH - 280,465,100, 15)
+        hitrect = pygame.Rect(WINDOW_WIDTH - 280,465, (self.health_bar.health * self.health_bar.multiplier), 15)
         pygame.draw.rect(screen, (255, 0, 0),hitrect1)
         pygame.draw.rect(screen, (0, 255, 0), hitrect)
 

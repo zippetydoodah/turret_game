@@ -177,7 +177,6 @@ def menu_loop():
     
 
 menu_loop()
-
-# make power plant generates power
-# make refinery turn ore into cash takes electricity 
-# make lasers take electricity.
+# make airborn enemies which are generally faster than land enemies apart from:
+# make very fast very low health enemies that you need high bullet speed for.
+# make turret that specialises in airborn enemies.

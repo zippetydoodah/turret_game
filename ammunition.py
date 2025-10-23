@@ -38,7 +38,7 @@ class Flame_ammo(Base_ammunition):
 
 class Laser_ammo(Base_ammunition):
     def __init__(self, pos,target,speed = 2):
-        super().__init__(pos,"laser",target,7,speed)
+        super().__init__(pos,"laser",target,2,speed)
 
 class Machine_gun_ammo(Base_ammunition):
     def __init__(self, pos,target,speed = 5):

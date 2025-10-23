@@ -32,7 +32,7 @@ class HighlightedTile:
                 screen.blit(range_surf,((self.tile.pos.x + TILE_SIZE/2) - self.tile.healer.range, (self.tile.pos.y + TILE_SIZE/2) - self.tile.healer.range))
 
                 self.tile.healer.health_bar.render(screen,True)
-                self.tile.generator.power_bar.render(screen,True)
+                self.tile.healer.power_bar.render(screen,True)
 
             if self.tile.wall:
                 self.tile.wall.health_bar.render(screen,True)
