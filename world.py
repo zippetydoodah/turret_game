@@ -8,17 +8,23 @@ from effects import Effect_slot
 from items import *
 import math
 import random
+from tile import * 
 
 class World:
     def __init__(self):
         self.MAP = []
+        self.STRUCT_MAP = []
+
         self.enemies = []
         self.wave = 0
         self.wave_time = None
+
         self.double_drops_slot = Effect_slot((WINDOW_WIDTH - 100,WINDOW_HEIGHT - 100), image_size=50, end_time = 30)
         self.freeze_time_slot = Effect_slot((WINDOW_WIDTH - 180,WINDOW_HEIGHT - 100), image_size=50, end_time = 10)
+
         self.since_paused = None
         self.base_tile = None
+
         self.turrets = []
         self.walls = []
         self.generators = []
@@ -112,18 +118,29 @@ class World:
     def skip_round(self):
         self.wave_time = WAIT_BETWEEN_WAVES
 
-    def get_map(self,level):
-        #self.MAP = level_to_map[level]
+    def get_map(self):
         self.MAP = self.generate_tiles()
-        coords = self.coords_change((WINDOW_WIDTH/2,WINDOW_HEIGHT/2))
-        self.MAP[coords[0]][coords[1]] = Base_tile(coords[0]*TILE_SIZE,coords[1]*TILE_SIZE)
-        self.base_tile = self.MAP[coords[0]][coords[1]]
+        self.STRUCT_MAP = self.generate_structs()
 
+        coords = self.coords_change((WINDOW_WIDTH/2,WINDOW_HEIGHT/2))
+
+        self.STRUCT_MAP[coords[0]][coords[1]] = Base_tile(coords[0]*TILE_SIZE,coords[1]*TILE_SIZE)
+        self.base_tile = self.STRUCT_MAP[coords[0]][coords[1]]
+
+    def generate_structs(self):
+        struct_map = []
+        for x in range(0,int(WINDOW_WIDTH/TILE_SIZE)):
+            struct_map.append([])
+            for y in range(0,int(WINDOW_HEIGHT/TILE_SIZE)):
+                struct_map[x].append(None_tile(x * TILE_SIZE,y*TILE_SIZE))
+
+        return struct_map
+    
     def generate_tiles(self):
         width = int(WINDOW_WIDTH/TILE_SIZE)
         height = int(WINDOW_HEIGHT/TILE_SIZE)
 
-        TERRAIN_TYPES = ["grass", "grass","ore"]
+        TERRAIN_TYPES = ["grass", "grass","grass","grass","ore"]
         
         grid = [[random.choice(TERRAIN_TYPES) for _ in range(height + 1)] for _ in range(width + 1)]
 
@@ -159,9 +176,13 @@ class World:
         y = math.floor(coords[1]/TILE_SIZE)
         return (x,y)
     
-    def remove_tile(self,tile):
+    def remove_bg_tile(self,tile):
         (x,y) = self.coords_change((tile.pos.x,tile.pos.y))
         self.MAP[x][y] = Grass(tile.pos.x,tile.pos.y)
+
+    def remove_struct_tile(self,tile):
+        (x,y) = self.coords_change((tile.pos.x,tile.pos.y))
+        self.STRUCT_MAP[x][y] = None_tile(tile.pos.x,tile.pos.y)
     
     def collisions(self):
         for bullet in self.get_bullets():
@@ -207,7 +228,7 @@ class World:
         for enemy in self.enemies:
             for mine in self.get_mines():
                 if enemy.rect.colliderect(mine.rect):
-                    self.remove_tile(mine)
+                    self.remove_bg_tile(mine)
                     mine_kill = mine
 
         if mine_kill:
@@ -220,7 +241,7 @@ class World:
     
     def place_turret(self,event,inventory):
         pos = self.coords_change(pygame.mouse.get_pos())
-        tile = self.MAP[pos[0]][pos[1]]
+        tile = self.STRUCT_MAP[pos[0]][pos[1]]
         to_remove = []
 
         if inventory.dragging and inventory.dragging.placeable:
@@ -228,9 +249,9 @@ class World:
         else:
             to_place = None
 
-        if not tile.turret and tile != self.base_tile and tile not in self.structs and to_place:
+        if tile != self.base_tile and tile not in self.structs and to_place:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
-                self.MAP[pos[0]][pos[1]] = to_place(pos[0]*TILE_SIZE,pos[1]*TILE_SIZE)
+                self.STRUCT_MAP[pos[0]][pos[1]] = to_place(pos[0]*TILE_SIZE,pos[1]*TILE_SIZE)
                 inventory.dragging = None
 
         if inventory.dragging and not inventory.dragging.placeable:
@@ -273,23 +294,23 @@ class World:
                 
     def break_turret(self,event,inventory):
         pos = self.coords_change(pygame.mouse.get_pos())
-        tile = self.MAP[pos[0]][pos[1]]
+        tile = self.STRUCT_MAP[pos[0]][pos[1]]
 
-        if tile.turret or tile.wall or tile.generator or tile.plant or tile.healer:
+        if tile.type:
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 inventory.add_item(tile.type,1)
-                self.MAP[pos[0]][pos[1]] = Grass(pos[0] * TILE_SIZE,pos[1] * TILE_SIZE)
+                self.STRUCT_MAP[pos[0]][pos[1]] = None_tile(tile.pos.x,tile.pos.y)
 
     def identify_turret(self,pos):
         x_idx, y_idx = int(pos.x), int(pos.y)
-        max_x = len(self.MAP)
-        max_y = len(self.MAP[0]) if max_x > 0 else 0
+        max_x = len(self.STRUCT_MAP)
+        max_y = len(self.STRUCT_MAP[0]) if max_x > 0 else 0
 
         # Clamp x and y to be within bounds
         x_idx = max(0, min(x_idx, max_x - 1))
         y_idx = max(0, min(y_idx, max_y - 1))
 
-        return self.MAP[x_idx][y_idx]
+        return self.STRUCT_MAP[x_idx][y_idx]
     
     def add_tile(self,pos,type):
         self.MAP[pos.x/TILE_SIZE][pos.y/TILE_SIZE] = IDENTIFY_TILE[type](pos.x,pos.y)
@@ -308,12 +329,13 @@ class World:
     def heal_turret(self,amount,tile):
         for struct in self.structs:
             if struct != tile:
+
                 dx = struct.pos.x - (tile.pos.x + TILE_SIZE/2)
                 dy = struct.pos.y - (tile.pos.y + TILE_SIZE/2)
                 distance = (dx**2 + dy**2)**0.5
-                print(10)
+                
                 if distance <= tile.healer.range:
-                    print(33)
+                    
                     if struct.generator:
                         if struct.generator.health_bar.health < struct.generator.health_bar.total_health:
                             struct.generator.health_bar.update_health(-amount)
@@ -403,7 +425,7 @@ class World:
                 to_remove.append(plant)
 
         for tile in to_remove:
-            self.remove_tile(tile)
+            self.remove_bg_tile(tile)
     
     def get_bullets(self):
         
@@ -416,9 +438,9 @@ class World:
     
     def get_power_plants(self):
         plants = []
-        for column in self.MAP:
+        for column in self.STRUCT_MAP:
             for w in column:
-                if w.plant:
+                if w.type and w.plant:
                     plants.append(w)
 
         self.plants = plants
@@ -426,9 +448,9 @@ class World:
 
     def get_healers(self):       
         healers = []
-        for column in self.MAP:
+        for column in self.STRUCT_MAP:
             for h in column:
-                if h.healer:
+                if h.type and h.healer:
                     healers.append(h)
 
         self.healers = healers
@@ -436,18 +458,18 @@ class World:
 
     def get_walls(self):        
         walls = []
-        for column in self.MAP:
+        for column in self.STRUCT_MAP:
             for w in column:
-                if w.wall:
+                if w.type and w.wall:
                     walls.append(w)
         self.walls = walls
         self.structs.extend(walls)
 
     def get_generators(self):
         generators = []
-        for column in self.MAP:
+        for column in self.STRUCT_MAP:
             for g in column:
-                if g.generator:
+                if g.type and g.generator:
                     generators.append(g)
         self.generators = generators
         self.structs.extend(generators)
@@ -455,18 +477,18 @@ class World:
     def get_turrets(self):
         
         turrets = []
-        for column in self.MAP:
+        for column in self.STRUCT_MAP:
             for t in column:
-                if t.turret:
+                if t.type and t.turret:
                     turrets.append(t)
         self.turrets = turrets
         self.structs.extend(turrets)
     
     def get_mines(self):
         mines = []
-        for column in self.MAP:
+        for column in self.STRUCT_MAP:
             for t in column:
-                if t.mine:
+                if t.type and t.mine:
                     mines.append(t)
         return mines
     
@@ -620,15 +642,19 @@ class World:
 
     def render(self,screen,selected_tile):
         to_render = []
-
         for column in self.MAP:
+            for t in column:
+                t.render(screen)
+
+        for column in self.STRUCT_MAP:
             for t in column:
 
                 t.render(screen)
-                if t.turret:
-                    to_render.append(t)
-                if t.wall:
-                    to_render.append(t)
+                if t.type:
+                    if t.turret:
+                        to_render.append(t)
+                    if t.wall:
+                        to_render.append(t)
 
         for t in to_render:
             if t.turret:

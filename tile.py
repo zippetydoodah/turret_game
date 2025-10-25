@@ -3,6 +3,14 @@ from Turret import Basic_Turret
 from settings import *
 from base import Base
 
+class None_tile:
+    def __init__(self,x,y):
+        self.pos = Vector2(x,y)
+        self.type = None
+        
+    def render(self,screen):
+        pass
+
 class Tile:
     def __init__(self,x,y,type, name, image,turret = None,base = None,wall = None,mine = None,generator = None,plant = None,healer = None):
         self.pos = Vector2(x,y)

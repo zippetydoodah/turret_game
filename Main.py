@@ -36,7 +36,7 @@ def game_loop():
     fast_forward = Button((WINDOW_WIDTH - 245,10),"unclicked_fast_forward","clicked_fast_forward",(75,75))
     pause_button = Button((WINDOW_WIDTH - 170,10),"pause","play",(75,75))
     skip_wave_button = Button((WINDOW_WIDTH - 320,10),"clicked_skip","unclicked_skip",(75,75))
-    world.get_map(1)
+    world.get_map()
 
     while True:
 

@@ -46,7 +46,7 @@ class Structure:
         if self.name == "healer":
             self.render_animation(screen)
 
-        if self.showing and selected_tile.tile.turret != self and selected_tile.tile.healer != self and (self.name == "flame_turret" or self.name == "machine_gun_turret" or self.name == "healer"):
+        if self.showing and selected_tile.tile.type and selected_tile.tile.turret != self and selected_tile.tile.healer != self and (self.name == "flame_turret" or self.name == "machine_gun_turret" or self.name == "healer"):
             range_surf = pygame.Surface((self.range *2, self.range*2), pygame.SRCALPHA)
             pygame.draw.circle(range_surf,(123,123,123,100),(self.range,self.range),self.range)
             screen.blit(range_surf,((self.pos[0] + TILE_SIZE/2) - self.range, (self.pos[1] + TILE_SIZE/2) - self.range))

@@ -11,7 +11,7 @@ class HighlightedTile:
     
     def render(self, screen):
         
-        if self.tile.type and self.tile.turret or self.tile.wall or self.tile.mine or self.tile.generator or self.tile.plant or self.tile.healer:
+        if self.tile.type:
 
             if self.tile.turret:
                 range_surf = pygame.Surface((self.tile.turret.range *2, self.tile.turret.range*2), pygame.SRCALPHA)
