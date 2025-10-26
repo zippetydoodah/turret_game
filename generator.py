@@ -37,7 +37,6 @@ class Generator(Structure):
             count_text_rect = count_text.get_rect()
             count_text_rect.topleft = (WINDOW_WIDTH - 280,350)
             screen.blit(count_text,count_text_rect)
-
     
 class Basic_generator(Generator):
      def __init__(self,pos):

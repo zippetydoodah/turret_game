@@ -397,13 +397,16 @@ class World:
 
             if source_tile.type and source_tile.ore:
                 if source_tile.ore.amount > 0:
-
+                    p.plant.power_bar.power = p.plant.power_bar.total_power
                     if p.plant.get_reward(source_tile):
                         source_tile.ore.amount -= 1
-
-                    total_power += p.plant.power
+                    total_power += p.plant.power_bar.power
                 else:
                     self.MAP[coords[0]][coords[1]] = Grass(coords[0]*TILE_SIZE,coords[1]*TILE_SIZE)
+            else:
+                p.plant.power_bar.power = 0
+
+
         power.power = total_power
 
     def check_health(self):
@@ -435,7 +438,7 @@ class World:
                 to_remove.append(plant)
 
         for tile in to_remove:
-            self.remove_bg_tile(tile)
+            self.remove_struct_tile(tile)
     
     def get_bullets(self):
         

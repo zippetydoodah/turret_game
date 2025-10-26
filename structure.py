@@ -9,7 +9,9 @@ class Structure:
         self.name = name
         self.health = health
         self.upgrades = upgrades
+
         self.health_bar = Health_bar(health,Vector2(self.pos[0],self.pos[1]))
+        
         if power:
             self.power_bar = Power_bar(power,Vector2(self.pos[0],self.pos[1] - 5))
         else:

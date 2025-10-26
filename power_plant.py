@@ -6,9 +6,11 @@ import time
 
 class Power_plant(Structure):
     def __init__(self,pos,health,name,power,speed):
-        super().__init__(pos,health,None,name,[])
+        super().__init__(pos,health,power,name,[])
+
         self.pos = pos
         self.power = power
+        self.total_power = power
         self.timer = None
         self.speed = speed
         self.source_tile = None
@@ -18,7 +20,7 @@ class Power_plant(Structure):
     
     def get_reward(self,source_tile):
         self.source_tile = source_tile
-
+        
         if not self.timer:
             self.timer = time.time()
         
@@ -35,7 +37,7 @@ class Power_plant(Structure):
 
             count_text = font.render("Resources:%s"%(self.source_tile.ore.amount), 1, (0,0,0), None)
             count_text_rect = count_text.get_rect()
-            count_text_rect.topleft = (WINDOW_WIDTH - 280,350)
+            count_text_rect.topleft = (WINDOW_WIDTH - 280,400)
             screen.blit(count_text,count_text_rect)
 
         
