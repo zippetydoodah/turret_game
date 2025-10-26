@@ -20,6 +20,7 @@ class Structure:
         self.showing = False
         self.slot = Slot((WINDOW_WIDTH - 170,460),image_size=50)
         self.slot.item = Wrench(1)
+        self.font = pygame.font.SysFont('Arial', 25)
 
     def update_power(self,power):
         if power >= self.power_bar.total_power:
@@ -53,12 +54,14 @@ class Structure:
         
         if self.showing:
             self.health_bar.render(screen,r = True)
+
             if self.power_bar:
                 self.power_bar.render(screen,r = True)
+
             self.UI.render(screen)
             self.slot.render(screen)
 
-        if self.showing and (self.name == "generator" or self.name == "healer"):
+        if self.showing and (self.name == "generator" or self.name == "healer" or self.name == "power_plant"):
             self.render_extra(screen)
 
     def render(self,screen):

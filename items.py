@@ -20,7 +20,7 @@ class Healer_item(Item):
 
 class Machine_gun_turret_item(Item):
     def __init__(self,quantity):
-        super().__init__(type = "machine_gun_turret",quantity = quantity,placeable = True, range = 200)
+        super().__init__(type = "machine_gun_turret",quantity = quantity,placeable = True, range = 300)
 
 class Generator_turret(Item):
     def __init__(self,quantity):

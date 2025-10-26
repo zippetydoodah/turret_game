@@ -12,7 +12,6 @@ class Healer(Structure):
         self.reward = reward
         self.base_range = range
         self.range = range
-        self.font = pygame.font.SysFont('Arial', 25)
         self.start_time = None
         self.duration = 1.5
 
@@ -51,11 +50,6 @@ class Healer(Structure):
             count_text_rect = count_text.get_rect()
             count_text_rect.topleft = (WINDOW_WIDTH - 280,350)
             screen.blit(count_text,count_text_rect)
-
-        count_text = font.render("Power:%s/%s"%(self.power_bar.power,self.power_bar.total_power), 1, (0,0,0), None)
-        count_text_rect = count_text.get_rect()
-        count_text_rect.topleft = (WINDOW_WIDTH - 280,300)
-        screen.blit(count_text,count_text_rect)
 
 class Basic_Healer(Healer):
      def __init__(self,pos):

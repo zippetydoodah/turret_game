@@ -1,4 +1,3 @@
-from maps import *
 from settings import *
 from textures import *
 from identify_tile import IDENTIFY_TILE
@@ -140,7 +139,7 @@ class World:
         width = int(WINDOW_WIDTH/TILE_SIZE)
         height = int(WINDOW_HEIGHT/TILE_SIZE)
 
-        TERRAIN_TYPES = ["grass", "grass","grass","grass","ore"]
+        TERRAIN_TYPES = ["grass", "grass","grass","grass","azurite"]
         
         grid = [[random.choice(TERRAIN_TYPES) for _ in range(height + 1)] for _ in range(width + 1)]
 
@@ -163,8 +162,8 @@ class World:
             for t in tile:
                 if t == "grass":
                     tiles[count].append(Grass(count * TILE_SIZE,count2 * TILE_SIZE))
-                if t == "ore":
-                    tiles[count].append(Ore(count * TILE_SIZE,count2 * TILE_SIZE))
+                if t == "azurite":
+                    tiles[count].append(Azurite_tile(count * TILE_SIZE,count2 * TILE_SIZE))
 
                 count2 += 1
             count += 1
@@ -228,7 +227,7 @@ class World:
         for enemy in self.enemies:
             for mine in self.get_mines():
                 if enemy.rect.colliderect(mine.rect):
-                    self.remove_bg_tile(mine)
+                    self.remove_struct_tile(mine)
                     mine_kill = mine
 
         if mine_kill:
@@ -391,9 +390,20 @@ class World:
 
     def generate_power(self,power):
         total_power = 0
-        for p in self.plants:
-            total_power += p.plant.power
 
+        for p in self.plants:
+            coords = self.coords_change(p.pos)
+            source_tile = self.MAP[coords[0]][coords[1]]
+
+            if source_tile.type and source_tile.ore:
+                if source_tile.ore.amount > 0:
+
+                    if p.plant.get_reward(source_tile):
+                        source_tile.ore.amount -= 1
+
+                    total_power += p.plant.power
+                else:
+                    self.MAP[coords[0]][coords[1]] = Grass(coords[0]*TILE_SIZE,coords[1]*TILE_SIZE)
         power.power = total_power
 
     def check_health(self):

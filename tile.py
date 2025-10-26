@@ -2,17 +2,18 @@ from pygame import Vector2
 from Turret import Basic_Turret
 from settings import *
 from base import Base
+from ores import *
 
 class None_tile:
     def __init__(self,x,y):
         self.pos = Vector2(x,y)
         self.type = None
-        
+
     def render(self,screen):
         pass
 
 class Tile:
-    def __init__(self,x,y,type, name, image,turret = None,base = None,wall = None,mine = None,generator = None,plant = None,healer = None):
+    def __init__(self,x,y,type, name, image,turret = None,base = None,wall = None,mine = None,generator = None,plant = None,healer = None,ore = None):
         self.pos = Vector2(x,y)
         self.type = type
         self.name = name   
@@ -20,9 +21,15 @@ class Tile:
         self.rect = self.image.get_rect()
         self.rect.topleft = self.pos
         self.notify_image = getImage("notify")
+        
         #self.structure = struct()
         # have only one struct variable rather than seperate so easier to access.
         
+        if ore:
+            self.ore = ore()
+        else:
+            self.ore = None
+
         if base:
             self.base = Base(self.pos)
         else:

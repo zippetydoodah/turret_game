@@ -14,7 +14,7 @@ class Base_ammunition:
         self.image = getImage(self.type)
         self.rect = self.image.get_rect()
 
-        self.dx = self.target_pos[0]- self.pos.x
+        self.dx = self.target_pos[0] - self.pos.x
         self.dy = self.target_pos[1] - self.pos.y
         self.hyp = math.sqrt((self.dx * self.dx) + (self.dy * self.dy))
         

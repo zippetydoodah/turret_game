@@ -2,7 +2,7 @@ from textures import *
 
 IDENTIFY_TILE = {
     "grass":Grass,
-    "ore":Ore,
+    "azurite":Azurite_tile,
     "machine_gun_turret":Machine_gun_turret,
     "flame_turret":Flame_turret_tile,
     "base_tile":Base_tile,

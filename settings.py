@@ -20,7 +20,7 @@ IMAGES = {
     "dragon":"dragon.png",
     
     "grass":"grass.png",
-    "ore":"ore.png",
+    "azurite":"ore.png",
     "base_tile":"base.png",
 
     "bullet":"bullet.png",

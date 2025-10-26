@@ -156,7 +156,7 @@ def game_loop():
 
 def menu_loop():
     play_button = Button((WINDOW_WIDTH/2 - 100,300),"clicked_play","unclicked_play",(200,100))
-
+    
     while True:
         clock.tick(60)
         screen.fill((0,0,0))

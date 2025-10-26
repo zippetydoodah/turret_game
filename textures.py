@@ -7,6 +7,7 @@ from mine import *
 from generator import *
 from power_plant import *
 from healer import *
+from ores import *
 
 class Grass(Tile):
     tile_image = None
@@ -32,17 +33,17 @@ class Power_plant_tile(Tile):
         self.load_image()
         super().__init__(x, y,"power_plant",IMAGES["power_plant"],Power_plant_tile.tile_image, plant = Basic_power_plant)
 
-class Ore(Tile):
+class Azurite_tile(Tile):
     tile_image = None
     @staticmethod
     def load_image():
-        if Ore.tile_image is None:
-            image = getImage("ore")
-            Ore.tile_image = pygame.transform.scale(image, (TILE_SIZE, TILE_SIZE)) 
+        if Azurite_tile.tile_image is None:
+            image = getImage("azurite")
+            Azurite_tile.tile_image = pygame.transform.scale(image, (TILE_SIZE, TILE_SIZE)) 
 
     def __init__(self, x, y):
         self.load_image()
-        super().__init__(x, y,"ore",IMAGES["ore"],Ore.tile_image)
+        super().__init__(x, y,"azurite",IMAGES["azurite"],Azurite_tile.tile_image,ore = Azurite)
 
 class Base_tile(Tile):
     tile_image = None

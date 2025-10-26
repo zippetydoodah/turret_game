@@ -31,17 +31,13 @@ class Generator(Structure):
     
     def render_extra(self,screen):
         if self.power_bar.power == self.power_bar.total_power:   
-            font = pygame.font.SysFont('Arial', 25)
+            font = self.font
+            
             count_text = font.render("Timer:%s/%s"%(int(time.time() - self.timer),self.speed), 1, (0,0,0), None)
             count_text_rect = count_text.get_rect()
             count_text_rect.topleft = (WINDOW_WIDTH - 280,350)
             screen.blit(count_text,count_text_rect)
 
-        font = pygame.font.SysFont('Arial', 25)
-        count_text = font.render("Power:%s/%s"%(self.power_bar.power,self.power_bar.total_power), 1, (0,0,0), None)
-        count_text_rect = count_text.get_rect()
-        count_text_rect.topleft = (WINDOW_WIDTH - 280,300)
-        screen.blit(count_text,count_text_rect)
     
 class Basic_generator(Generator):
      def __init__(self,pos):
