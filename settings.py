@@ -54,6 +54,7 @@ IMAGES = {
     "bin":"bin.png",
     "wrench":"wrench.png",
     "tile_highlight":"turret_highlight.png",
+    "selected":"selected.png",
     "notify":"notify.png",
 
     "slot":"inventory_slot.png",

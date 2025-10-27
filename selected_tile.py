@@ -1,16 +1,20 @@
 import pygame
 from settings import *
 
-class HighlightedTile:
-    def __init__(self, tile):
-        self.tile = tile
+class Selected_tile:
+    def __init__(self):
+        self.tile = None
+
         self.image = getImage("tile_highlight")
         self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))
         self.tile_highlight_rect = self.image.get_rect()
-    
+        
+    def set_tile(self,tile):
+        self.tile = tile
+
     def render(self, screen):
         
-        if self.tile.type:
+        if self.tile and self.tile.type:
 
             if self.tile.turret:
                 range_surf = pygame.Surface((self.tile.turret.range *2, self.tile.turret.range*2), pygame.SRCALPHA)

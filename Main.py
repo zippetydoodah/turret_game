@@ -1,7 +1,7 @@
 import pygame
 from pygame import Vector2
 from world import World
-from selected_tile import HighlightedTile
+from selected_tile import Selected_tile
 from textures import *
 from inventory import Inventory
 from shop import Shop
@@ -32,6 +32,7 @@ def game_loop():
     options = Options()
     settings = Settings()
     chat = Chat()
+    selected_tile = Selected_tile()
 
     fast_forward = Button((WINDOW_WIDTH - 245,10),"unclicked_fast_forward","clicked_fast_forward",(75,75))
     pause_button = Button((WINDOW_WIDTH - 170,10),"pause","play",(75,75))
@@ -42,7 +43,8 @@ def game_loop():
 
         clock.tick(60)
         screen.fill((0,0,0))
-        selected_tile = HighlightedTile(world.identify_turret(Vector2(world.coords_change(pygame.mouse.get_pos()))))
+        
+        selected_tile.set_tile(world.identify_turret(Vector2(world.coords_change(pygame.mouse.get_pos()))))
 
         world.get_turrets()
         world.get_generators()
@@ -51,6 +53,7 @@ def game_loop():
         world.get_healers()
 
         for event in pygame.event.get():
+            
 
             world.place_turret(event,inventory)
             world.break_turret(event,inventory)
@@ -156,7 +159,7 @@ def game_loop():
 
 def menu_loop():
     play_button = Button((WINDOW_WIDTH/2 - 100,300),"clicked_play","unclicked_play",(200,100))
-    
+
     while True:
         clock.tick(60)
         screen.fill((0,0,0))

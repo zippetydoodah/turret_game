@@ -11,7 +11,7 @@ class Structure:
         self.upgrades = upgrades
 
         self.health_bar = Health_bar(health,Vector2(self.pos[0],self.pos[1]))
-        
+
         if power:
             self.power_bar = Power_bar(power,Vector2(self.pos[0],self.pos[1] - 5))
         else:
@@ -49,22 +49,33 @@ class Structure:
         if self.name == "healer":
             self.render_animation(screen)
 
-        if self.showing and selected_tile.tile.type and selected_tile.tile.turret != self and selected_tile.tile.healer != self and (self.name == "flame_turret" or self.name == "machine_gun_turret" or self.name == "healer"):
-            range_surf = pygame.Surface((self.range *2, self.range*2), pygame.SRCALPHA)
-            pygame.draw.circle(range_surf,(123,123,123,100),(self.range,self.range),self.range)
-            screen.blit(range_surf,((self.pos[0] + TILE_SIZE/2) - self.range, (self.pos[1] + TILE_SIZE/2) - self.range))
-        
         if self.showing:
+
+            if (self.name == "flame_turret" or self.name == "machine_gun_turret" or self.name == "healer"):
+                if selected_tile.tile.type and selected_tile.tile.turret != self:
+                    range_surf = pygame.Surface((self.range *2, self.range*2), pygame.SRCALPHA)
+                    pygame.draw.circle(range_surf,(123,123,123,100),(self.range,self.range),self.range)
+                    screen.blit(range_surf,((self.pos[0] + TILE_SIZE/2) - self.range, (self.pos[1] + TILE_SIZE/2) - self.range))
+
+                if not selected_tile.tile.type:
+                    range_surf = pygame.Surface((self.range *2, self.range*2), pygame.SRCALPHA)
+                    pygame.draw.circle(range_surf,(123,123,123,100),(self.range,self.range),self.range)
+                    screen.blit(range_surf,((self.pos[0] + TILE_SIZE/2) - self.range, (self.pos[1] + TILE_SIZE/2) - self.range))
+
+            selected_image = getImage("selected")
+            selected_image = pygame.transform.scale(selected_image, (TILE_SIZE, TILE_SIZE))
+            selected_rect = selected_image.get_rect()
+            selected_rect.topleft = self.pos
+            screen.blit(selected_image,selected_rect)
+
             self.health_bar.render(screen,r = True)
-
-            if self.power_bar:
-                self.power_bar.render(screen,r = True)
-
             self.UI.render(screen)
             self.slot.render(screen)
 
-        if self.showing and (self.name == "generator" or self.name == "healer" or self.name == "power_plant"):
-            self.render_extra(screen)
+            if self.power_bar:
+                self.power_bar.render(screen,r = True)
+            if self.name == "generator" or self.name == "healer" or self.name == "power_plant":
+                self.render_extra(screen)
 
     def render(self,screen):
         self.health_bar.render(screen)
