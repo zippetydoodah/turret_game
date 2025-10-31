@@ -87,7 +87,7 @@ class World:
                 to_remove.append(enemy)
                 if not self.double_drops_slot.start_time:
                     cash.update(enemy.drops)
-                else:
+                else:                                                                                                
                     cash.update(enemy.drops*2)
 
         for enemy in to_remove:
@@ -318,12 +318,30 @@ class World:
 
         for enemy in self.enemies:
             for turret in self.turrets:  
-                dx = enemy.pos.x - (turret.pos.x + TILE_SIZE/2)
-                dy = enemy.pos.y - (turret.pos.y + TILE_SIZE/2)
-                distance = (dx**2 + dy**2)**0.5
+                if not turret.turret.target_enemy:
 
+                    dx = enemy.pos.x - (turret.pos.x + TILE_SIZE/2)
+                    dy = enemy.pos.y - (turret.pos.y + TILE_SIZE/2)
+                    distance = (dx**2 + dy**2)**0.5
+                
+                    if distance <= turret.turret.range:
+                        turret.turret.target_enemy = enemy
+
+        for turret in self.turrets:
+            if turret.turret.target_enemy:
+                
+                dx = turret.turret.target_enemy.pos.x - (turret.pos.x + TILE_SIZE/2)
+                dy = turret.turret.target_enemy.pos.y - (turret.pos.y + TILE_SIZE/2)
+                distance = (dx**2 + dy**2)**0.5
+                
                 if distance <= turret.turret.range:
-                    turret.turret.shoot(enemy.pos)
+                    turret.turret.shoot()
+
+                    if turret.turret.target_enemy.health_bar.health <= 0 or turret.turret.target_enemy not in self.enemies:
+                        turret.turret.target_enemy = None
+
+                else:
+                    turret.turret.target_enemy = None
 
     def heal_turret(self,amount,tile):
         for struct in self.structs:

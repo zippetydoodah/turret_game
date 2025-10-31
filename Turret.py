@@ -9,7 +9,8 @@ from structure import *
 class Basic_Turret(Structure):
     def __init__(self,centre_pos,pos,speed, ammo, name, range,health,power = None,upgrades = []):
         super().__init__(pos,health,power,name,upgrades)
-
+        
+        self.target_enemy = None
         self.centre_pos = centre_pos
         self.base_speed = speed
         self.speed = speed
@@ -35,16 +36,16 @@ class Basic_Turret(Structure):
         if Increased_damage in self. upgrades:
             self.ammo.damage = self.ammo.base_damage + self.UI.slots[4].level * 2
 
-    def shoot(self,target_pos):
+    def shoot(self):
         bullet_speed = self.base_bullet_speed + self.UI.slots[0].level
 
         if not self.speed_timer and not self.elapsed_fire_time:
             if self.power_bar and self.power_bar.power == self.power_bar.total_power:
-                self.bullets_fired.append(self.ammo(self.centre_pos,target_pos,bullet_speed))
+                self.bullets_fired.append(self.ammo(self.centre_pos,self.target_enemy.pos,bullet_speed))
                 self.speed_timer = time.time()
                 
             elif not self.power_bar:
-                self.bullets_fired.append(self.ammo(self.centre_pos,target_pos,bullet_speed))
+                self.bullets_fired.append(self.ammo(self.centre_pos,self.target_enemy.pos,bullet_speed))
                 self.speed_timer = time.time()
 
         if self.speed_timer and time.time() - self.speed_timer > self.speed:
