@@ -6,6 +6,7 @@ class Selected_enemy:
         self.enemy = None
         self.image = getImage("enemy_highlight")
         self.rect = self.image.get_rect()
+        self.font = pygame.font.SysFont('Arial', 20)
 
     def set_enemy(self,enemy):
         self.enemy = enemy
@@ -13,8 +14,15 @@ class Selected_enemy:
     def render(self,screen):
         if self.enemy:
             #do name and a mini info box above them about their stats and their status like if they are being slowed down or frozen.
-            
             self.enemy.health_bar.render(screen,r = True)
+
+            font = self.font
+            name_text = font.render("%s"%(self.enemy.name), 1, (255,255,255), None)
+            name_text_rect = name_text.get_rect()
+            name_text_rect.topleft = (self.enemy.pos.x,self.enemy.pos.y - 30)
+
+            screen.blit(name_text,name_text_rect)
+
             self.rect.topleft = self.enemy.pos
             screen.blit(self.image,self.rect)
 
@@ -62,10 +70,11 @@ class Selected_tile:
                 self.tile.generator.power_bar.render(screen,True)
 
             if self.tile.plant:
+                self.tile.plant.power_bar.render(screen,True)   
                 self.tile.plant.health_bar.render(screen,True)       
 
             if self.tile.base:
                 self.tile.base.health_bar.render(screen,True)            
-                
+
             self.tile_highlight_rect.topleft = self.tile.pos
             screen.blit(self.image, self.tile_highlight_rect)

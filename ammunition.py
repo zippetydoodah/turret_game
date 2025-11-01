@@ -29,7 +29,7 @@ class Base_ammunition:
         self.pos.y += (self.dy / self.hyp * speed)
 
     def render(self,screen):
-        self.rect.topleft = self.pos
+        self.rect.center = self.pos
         screen.blit(self.image,self.rect)
 
 class Flame_ammo(Base_ammunition):

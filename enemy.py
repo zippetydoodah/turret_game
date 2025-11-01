@@ -41,6 +41,7 @@ class Enemy:
         self.rect = self.image.get_rect()
         self.rect.topleft = (self.pos.x,self.pos.y)
         screen.blit(self.image,self.rect)
+
         if settings.enemy_health.showing:
             self.health_bar.render(screen,r = True)
         else:
