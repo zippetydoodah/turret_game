@@ -212,6 +212,12 @@ class World:
                     to_remove.add(enemy)
 
         for enemy in self.enemies:
+            for plant in self.plants:
+                if enemy.rect.colliderect(plant.rect):
+                    plant.plant.health_bar.update_health(enemy.damage)
+                    to_remove.add(enemy)
+
+        for enemy in self.enemies:
             for wall in self.walls:
                 if enemy.rect.colliderect(wall.rect):
                     wall.wall.health_bar.update_health(enemy.damage)
@@ -426,6 +432,12 @@ class World:
 
 
         power.power = total_power
+
+    def enemy_at_mouse(self):
+        mouse_pos = pygame.mouse.get_pos()
+        for enemy in self.enemies:
+            if enemy.rect.collidepoint(mouse_pos):
+                return enemy
 
     def check_health(self):
         turrets = self.turrets

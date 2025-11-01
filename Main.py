@@ -1,7 +1,7 @@
 import pygame
 from pygame import Vector2
 from world import World
-from selected_tile import Selected_tile
+from selected_tile import *
 from textures import *
 from inventory import Inventory
 from shop import Shop
@@ -33,6 +33,7 @@ def game_loop():
     settings = Settings()
     chat = Chat()
     selected_tile = Selected_tile()
+    selected_enemy = Selected_enemy()
 
     fast_forward = Button((WINDOW_WIDTH - 245,10),"unclicked_fast_forward","clicked_fast_forward",(75,75))
     pause_button = Button((WINDOW_WIDTH - 170,10),"pause","play",(75,75))
@@ -45,6 +46,7 @@ def game_loop():
         screen.fill((0,0,0))
         
         selected_tile.set_tile(world.identify_turret(Vector2(world.coords_change(pygame.mouse.get_pos()))))
+        selected_enemy.set_enemy(world.enemy_at_mouse())
 
         world.get_turrets()
         world.get_generators()
@@ -53,7 +55,6 @@ def game_loop():
         world.get_healers()
 
         for event in pygame.event.get():
-            
 
             world.place_turret(event,inventory)
             world.break_turret(event,inventory)
@@ -113,8 +114,6 @@ def game_loop():
         world.turret_collisions()
         world.check_settings(settings,pause_button)
         world.render(screen,selected_tile)
-        
-        selected_tile.render(screen)
 
         inventory.render(screen)
         shop.render(screen)
@@ -131,6 +130,9 @@ def game_loop():
         world.render_wave_number(screen,inventory)
         world.generate_money(cash,power)
         world.generate_power(power)
+
+        selected_enemy.render(screen)
+        selected_tile.render(screen)
 
         if options.exit:
             menu_loop()
@@ -180,6 +182,11 @@ def menu_loop():
     
 
 menu_loop()
+
 # make airborn enemies which are generally faster than land enemies apart from:
 # make very fast very low health enemies that you need high bullet speed for.
 # make turret that specialises in airborn enemies.
+# make laser turrets as you upgrade them the power required also increases say for each upgrade performed add 1 extra power usage.
+# make enemy stats be accessable from selected enemy shows in a box that appears above the enemy as long as you are hovering aboe the enemy: include effects
+# make bombs highlight the enemies that will be killed or affected.
+# make 

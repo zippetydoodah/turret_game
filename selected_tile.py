@@ -1,10 +1,26 @@
 import pygame
 from settings import *
 
+class Selected_enemy:
+    def __init__(self):
+        self.enemy = None
+        self.image = getImage("enemy_highlight")
+        self.rect = self.image.get_rect()
+
+    def set_enemy(self,enemy):
+        self.enemy = enemy
+
+    def render(self,screen):
+        if self.enemy:
+            #do name and a mini info box above them about their stats and their status like if they are being slowed down or frozen.
+            
+            self.enemy.health_bar.render(screen,r = True)
+            self.rect.topleft = self.enemy.pos
+            screen.blit(self.image,self.rect)
+
 class Selected_tile:
     def __init__(self):
         self.tile = None
-
         self.image = getImage("tile_highlight")
         self.image = pygame.transform.scale(self.image, (TILE_SIZE, TILE_SIZE))
         self.tile_highlight_rect = self.image.get_rect()
@@ -21,6 +37,7 @@ class Selected_tile:
                 pygame.draw.circle(range_surf,(123,123,123,100),(self.tile.turret.range,self.tile.turret.range),self.tile.turret.range)
                 screen.blit(range_surf,((self.tile.pos.x + TILE_SIZE/2) - self.tile.turret.range, (self.tile.pos.y + TILE_SIZE/2) - self.tile.turret.range))
                 self.tile.turret.health_bar.render(screen,True)
+
                 if self.tile.turret.power_bar:
                     self.tile.turret.power_bar.render(screen,True)
 
