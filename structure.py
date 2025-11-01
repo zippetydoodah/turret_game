@@ -43,15 +43,27 @@ class Structure:
        
             self.UI.buy_item(event,cash,chat)
 
-    def render_ui(self,screen,selected_tile):
+    def render_ui(self,screen,selected_tile,settings = None):
         
         self.upgrade()
         if self.name == "healer":
             self.render_animation(screen)
 
+        if settings and settings.turret_range_toggle.showing:
+            if (self.name == "flame_turret" or self.name == "machine_gun_turret" or self.name == "healer" or self.name == "laser_turret"):
+                if selected_tile.tile.type and selected_tile.tile.turret != self:
+                    range_surf = pygame.Surface((self.range *2, self.range*2), pygame.SRCALPHA)
+                    pygame.draw.circle(range_surf,(123,123,123,100),(self.range,self.range),self.range)
+                    screen.blit(range_surf,((self.pos[0] + TILE_SIZE/2) - self.range, (self.pos[1] + TILE_SIZE/2) - self.range))
+
+                if not selected_tile.tile.type:
+                    range_surf = pygame.Surface((self.range *2, self.range*2), pygame.SRCALPHA)
+                    pygame.draw.circle(range_surf,(123,123,123,100),(self.range,self.range),self.range)
+                    screen.blit(range_surf,((self.pos[0] + TILE_SIZE/2) - self.range, (self.pos[1] + TILE_SIZE/2) - self.range))
+
         if self.showing:
 
-            if (self.name == "flame_turret" or self.name == "machine_gun_turret" or self.name == "healer"):
+            if (self.name == "flame_turret" or self.name == "laser_turret" or self.name == "machine_gun_turret" or self.name == "healer") and not settings.turret_range_toggle.showing:
                 if selected_tile.tile.type and selected_tile.tile.turret != self:
                     range_surf = pygame.Surface((self.range *2, self.range*2), pygame.SRCALPHA)
                     pygame.draw.circle(range_surf,(123,123,123,100),(self.range,self.range),self.range)

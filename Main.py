@@ -79,6 +79,8 @@ def game_loop():
             options.press(event,settings,None,chat)
             options.button.pressed(event)
 
+            settings.update_buttons(event)
+
             inventory.drag(event)
             inventory.is_showing(event)
 
@@ -113,7 +115,7 @@ def game_loop():
         world.check_collisions()
         world.turret_collisions()
         world.check_settings(settings,pause_button)
-        world.render(screen,selected_tile)
+        world.render(screen,selected_tile,settings)
 
         inventory.render(screen)
         shop.render(screen)
@@ -125,7 +127,7 @@ def game_loop():
         power.render(screen)
 
         world.render_effects(inventory,screen)
-        world.render_enemies(screen)
+        world.render_enemies(screen,settings)
         world.render_bullets(screen)
         world.render_wave_number(screen,inventory)
         world.generate_money(cash,power)
@@ -186,7 +188,5 @@ menu_loop()
 # make airborn enemies which are generally faster than land enemies apart from:
 # make very fast very low health enemies that you need high bullet speed for.
 # make turret that specialises in airborn enemies.
-# make laser turrets as you upgrade them the power required also increases say for each upgrade performed add 1 extra power usage.
 # make enemy stats be accessable from selected enemy shows in a box that appears above the enemy as long as you are hovering aboe the enemy: include effects
 # make bombs highlight the enemies that will be killed or affected.
-# make 

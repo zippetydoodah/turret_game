@@ -33,8 +33,15 @@ class Basic_Turret(Structure):
         if Increased_range_upgrade in self.upgrades:    
             self.range = self.base_range + (self.UI.slots[3].level * 10)
             
-        if Increased_damage in self. upgrades:
+        if Increased_damage in self.upgrades:
             self.ammo.damage = self.ammo.base_damage + self.UI.slots[4].level * 2
+
+        if self.power_bar:
+            added_power = 0
+            for slot in self.UI.slots:
+                if slot.level > 1:
+                    added_power += slot.level - 1
+            self.power_bar.total_power = self.power_bar.initial_power + added_power
 
     def shoot(self):
         bullet_speed = self.base_bullet_speed + self.UI.slots[0].level

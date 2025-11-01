@@ -37,11 +37,14 @@ class Enemy:
         self.pos.y += (self.dy / self.hyp * speed)
         self.health_bar.move(self.pos.x,self.pos.y)
 
-    def render(self,screen):
+    def render(self,screen,settings):
         self.rect = self.image.get_rect()
         self.rect.topleft = (self.pos.x,self.pos.y)
         screen.blit(self.image,self.rect)
-        self.health_bar.render(screen)
+        if settings.enemy_health.showing:
+            self.health_bar.render(screen,r = True)
+        else:
+            self.health_bar.render(screen)
         
 class Zombie(Enemy):
     def __init__(self,pos,target):

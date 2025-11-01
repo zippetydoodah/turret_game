@@ -66,8 +66,12 @@ IMAGES = {
     "inventory_background":"inventory_background_1.png",
     "effects_background":"effects_background.png",
     "settings_background":"settings_background.png",
-    "turret_bg":"turret_bg.png",
+    "unclicked_enemy_health":"unclicked_enemy_health.png",
+    "clicked_enemy_health":"clicked_enemy_health.png",
+    "unclicked_range_toggle":"unclicked_range_toggle.png",
+    "clicked_range_toggle":"clicked_range_toggle.png",
 
+    "turret_bg":"turret_bg.png",
     "clicked_shop":"clicked_shop.png",
     "unclicked_shop":"unclicked_shop.png",
 

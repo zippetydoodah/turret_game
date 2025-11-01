@@ -62,7 +62,10 @@ class Selected_tile:
                 self.tile.generator.power_bar.render(screen,True)
 
             if self.tile.plant:
-                self.tile.plant.health_bar.render(screen,True)            
+                self.tile.plant.health_bar.render(screen,True)       
 
+            if self.tile.base:
+                self.tile.base.health_bar.render(screen,True)            
+                
             self.tile_highlight_rect.topleft = self.tile.pos
             screen.blit(self.image, self.tile_highlight_rect)

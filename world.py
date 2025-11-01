@@ -93,9 +93,9 @@ class World:
         for enemy in to_remove:
             self.enemies.remove(enemy)
 
-    def render_enemies(self,screen):
+    def render_enemies(self,screen,settings):
         for enemy in self.enemies:
-            enemy.render(screen)
+            enemy.render(screen,settings)
     
     def button_selection(self,buttons):
         for button in buttons:
@@ -301,7 +301,7 @@ class World:
         pos = self.coords_change(pygame.mouse.get_pos())
         tile = self.STRUCT_MAP[pos[0]][pos[1]]
 
-        if tile.type:
+        if tile.type and tile.type != "base_tile":
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 inventory.add_item(tile.type,1)
                 self.STRUCT_MAP[pos[0]][pos[1]] = None_tile(tile.pos.x,tile.pos.y)
@@ -660,12 +660,12 @@ class World:
             if struct.healer:
                 struct.healer.inputs(event,pygame.mouse.get_pos(),cash,chat)
         
-    def render_turret(self,screen,selected_tile):
+    def render_turret(self,screen,selected_tile,settings):
         for struct in self.structs:
             
             if struct.turret:
                 struct.turret.UI.checking()
-                struct.turret.render_ui(screen,selected_tile)
+                struct.turret.render_ui(screen,selected_tile,settings = settings)
 
             if struct.wall:
                 struct.wall.UI.checking()
@@ -683,7 +683,7 @@ class World:
                 struct.healer.UI.checking()
                 struct.healer.render_ui(screen,selected_tile)
 
-    def render(self,screen,selected_tile):
+    def render(self,screen,selected_tile,settings):
         to_render = []
         for column in self.MAP:
             for t in column:
@@ -707,5 +707,5 @@ class World:
 
         self.base_tile.base.render(screen)
     
-        self.render_turret(screen,selected_tile)
+        self.render_turret(screen,selected_tile,settings)
     
