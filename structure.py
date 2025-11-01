@@ -62,17 +62,22 @@ class Structure:
                     screen.blit(range_surf,((self.pos[0] + TILE_SIZE/2) - self.range, (self.pos[1] + TILE_SIZE/2) - self.range))
 
         if self.showing:
+            q = False
+            if (self.name == "flame_turret" or self.name == "laser_turret" or self.name == "machine_gun_turret" or self.name == "healer"):
+                if settings and not settings.turret_range_toggle.showing:
+                    q = True
+                else:
+                    q = True
+                if q:
+                    if selected_tile.tile.type and selected_tile.tile.turret != self:
+                        range_surf = pygame.Surface((self.range *2, self.range*2), pygame.SRCALPHA)
+                        pygame.draw.circle(range_surf,(123,123,123,100),(self.range,self.range),self.range)
+                        screen.blit(range_surf,((self.pos[0] + TILE_SIZE/2) - self.range, (self.pos[1] + TILE_SIZE/2) - self.range))
 
-            if (self.name == "flame_turret" or self.name == "laser_turret" or self.name == "machine_gun_turret" or self.name == "healer") and not settings.turret_range_toggle.showing:
-                if selected_tile.tile.type and selected_tile.tile.turret != self:
-                    range_surf = pygame.Surface((self.range *2, self.range*2), pygame.SRCALPHA)
-                    pygame.draw.circle(range_surf,(123,123,123,100),(self.range,self.range),self.range)
-                    screen.blit(range_surf,((self.pos[0] + TILE_SIZE/2) - self.range, (self.pos[1] + TILE_SIZE/2) - self.range))
-
-                if not selected_tile.tile.type:
-                    range_surf = pygame.Surface((self.range *2, self.range*2), pygame.SRCALPHA)
-                    pygame.draw.circle(range_surf,(123,123,123,100),(self.range,self.range),self.range)
-                    screen.blit(range_surf,((self.pos[0] + TILE_SIZE/2) - self.range, (self.pos[1] + TILE_SIZE/2) - self.range))
+                    if not selected_tile.tile.type:
+                        range_surf = pygame.Surface((self.range *2, self.range*2), pygame.SRCALPHA)
+                        pygame.draw.circle(range_surf,(123,123,123,100),(self.range,self.range),self.range)
+                        screen.blit(range_surf,((self.pos[0] + TILE_SIZE/2) - self.range, (self.pos[1] + TILE_SIZE/2) - self.range))
 
             selected_image = getImage("selected")
             selected_image = pygame.transform.scale(selected_image, (TILE_SIZE, TILE_SIZE))
