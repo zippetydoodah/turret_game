@@ -15,6 +15,8 @@ WINDOW_WIDTH = 1300
 WINDOW_HEIGHT = 800
 
 IMAGES = {
+
+    "minion":"minion.png",
     "zombie":"zombie.png",
     "troll":"troll.png",
     "dragon":"dragon.png",
@@ -60,18 +62,29 @@ IMAGES = {
 
     "slot":"inventory_slot.png",
     "effect_slot":"effect_slot.png",
+
     "shop_background":"shop_background.png",
     "cash_background":"cash_background.png",
     "defence_background":"defence_background.png",
     "inventory_background":"inventory_background_1.png",
     "effects_background":"effects_background.png",
     "settings_background":"settings_background.png",
+    "turret_bg":"turret_bg.png",
+
+    "unclicked_turret_health":"unclicked_turret_health.png",
+    "clicked_turret_health":"clicked_turret_health.png",
+
     "unclicked_enemy_health":"unclicked_enemy_health.png",
     "clicked_enemy_health":"clicked_enemy_health.png",
+    "unclicked_enemy_name":"unclicked_enemy_name.png",
+    "clicked_enemy_name":"clicked_enemy_name.png",
+
     "unclicked_range_toggle":"unclicked_range_toggle.png",
     "clicked_range_toggle":"clicked_range_toggle.png",
 
-    "turret_bg":"turret_bg.png",
+    "clicked_tutorial":"clicked_tutorial.png",
+    "unclicked_tutorial":"unclicked_tutorial.png",
+
     "clicked_shop":"clicked_shop.png",
     "unclicked_shop":"unclicked_shop.png",
 

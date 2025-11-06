@@ -90,7 +90,7 @@ def game_loop():
             if event.type == pygame.QUIT:
                 quit()
         
-        if not world.is_alive():
+        if not world.is_alive(pause_button):
             menu_loop()
 
         shop.restock()
@@ -130,6 +130,7 @@ def game_loop():
         world.render_enemies(screen,settings)
         world.render_bullets(screen)
         world.render_wave_number(screen,inventory)
+
         world.generate_money(cash,power)
         world.generate_power(power)
 
@@ -161,8 +162,48 @@ def game_loop():
         
         pygame.display.flip()
 
+def tutorial():
+
+    title = Text("How to play:",(100,100), 60,colour = (255,255,255))
+
+    text = ["This is a turret defence game","different types of enemies will try to attack your base (the yellow square at the centre)",
+            "Your aim is to prevent them using turrets such as:",
+            "Machine gun, Laser turret and Flame turret",""
+            "You LEFT click to break the turrets and RIGHT click to place them",""
+            "RIGHT click a turret again to view stats for that turret, RIGHT click/ ESCAPE to stop viewing stats",
+            "Some buildings/turrets require power some do not ",
+            "Power plants must be placed on the blue ore in order to generate power",
+            "they will eventually run out of ore and therefore stop generating power",
+            "","ESCAPE to exit"] 
+    
+    to_render = []
+    x = 100
+    y = 170
+
+    for element in text:
+        to_render.append(Text(element,(x,y),30,colour = (255,255,255)))
+        y += 45
+
+    while True:
+        clock.tick(60)
+        screen.fill((0,0,0))
+        
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                return
+            
+            if event.type == pygame.QUIT:
+                quit()
+
+        for element in to_render:
+            element.render(screen)
+
+        title.render(screen)
+        pygame.display.flip()
+
 def menu_loop():
     play_button = Button((WINDOW_WIDTH/2 - 100,300),"clicked_play","unclicked_play",(200,100))
+    tutorial_button = Button((WINDOW_WIDTH/2 - 75,600),"clicked_tutorial","unclicked_tutorial",(150,75))
 
     while True:
         clock.tick(60)
@@ -170,6 +211,7 @@ def menu_loop():
         
         for event in pygame.event.get():
             play_button.pressed(event)
+            tutorial_button.pressed(event)
 
             if event.type == pygame.QUIT:
                 quit()
@@ -177,7 +219,13 @@ def menu_loop():
         if play_button.showing:
             game_loop()
 
+        if tutorial_button.showing:
+            tutorial()
+            tutorial_button.showing = False
+
         play_button.update()
+        tutorial_button.update()
+        tutorial_button.render(screen)
         play_button.render(screen)
 
         pygame.display.flip()
@@ -190,3 +238,6 @@ menu_loop()
 # make turret that specialises in airborn enemies.
 # make enemy stats be accessable from selected enemy shows in a box that appears above the enemy as long as you are hovering aboe the enemy: include effects
 # make bombs highlight the enemies that will be killed or affected.
+# make upgrade for walls when if they are placed on an ore patch will regenerate their health.
+# make upgrade for power plants for more power output and another upgrade that reduces usage of ore.
+# make a different ore type called uranium that lasts forever but that u need a special nuclear plant for (more expensive but large power output).

@@ -37,12 +37,13 @@ class Chat:
                 text.render(screen)
 
 class Text:
-    def __init__(self,text,pos,size):
+    def __init__(self,text,pos,size,colour = (0,0,0)):
         self.text = text
         self.pos = pos
         self.speed = 1
+        self.colour = colour
         self.font = pygame.font.SysFont('Arial', size)
-        self.texts = self.font.render("%s"%(self.text), True, (0,0,0), None)
+        self.texts = self.font.render("%s"%(self.text), True, colour, None)
         self.textRect = self.texts.get_rect()
         self.textRect.topleft = pos
 

@@ -20,6 +20,7 @@ class Enemy:
         self.dy = self.target_pos[1] - self.pos.y
         self.hyp = math.sqrt((self.dx * self.dx) + (self.dy * self.dy))
         self.slow_down = None
+        self.font = pygame.font.SysFont('Arial', 20)
 
     def move(self,fast_forward):
         speed = self.speed
@@ -42,20 +43,31 @@ class Enemy:
         self.rect.topleft = (self.pos.x,self.pos.y)
         screen.blit(self.image,self.rect)
 
+        if settings.enemy_name.showing:
+            font = self.font
+            name_text = font.render("%s"%(self.name), 1, (255,255,255), None)
+            name_text_rect = name_text.get_rect()
+            name_text_rect.topleft = (self.pos.x,self.pos.y - 30)
+            screen.blit(name_text,name_text_rect)
+
         if settings.enemy_health.showing:
             self.health_bar.render(screen,r = True)
         else:
             self.health_bar.render(screen)
-        
+
+class Minion(Enemy):
+    def __init__(self,pos,target):
+        super().__init__(pos,target,"minion",0.8,1,health = 10,drops = 5)
+
 class Zombie(Enemy):
     def __init__(self,pos,target):
-        super().__init__(pos,target,"zombie",0.5,2,health= 100,drops = 5)
+        super().__init__(pos,target,"zombie",0.5,2,health= 50,drops = 5)
 
 class Troll(Enemy):
     def __init__(self,pos,target):
-        super().__init__(pos,target,"troll",0.4,10,health= 250,drops = 15)
+        super().__init__(pos,target,"troll",0.4,10,health= 100,drops = 15)
 
 class Dragon(Enemy):
     def __init__(self,pos,target):
-        super().__init__(pos,target,"dragon",0.3,50,health = 1000,drops = 300)
+        super().__init__(pos,target,"dragon",0.3,50,health = 500,drops = 300)
     

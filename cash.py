@@ -3,7 +3,7 @@ from background import Background
 
 class Cash:
     def __init__(self):
-        self.money = 500
+        self.money = 10
         self.background = Background("cash_background",(0,0),(160,90))
 
     def update(self,amount):

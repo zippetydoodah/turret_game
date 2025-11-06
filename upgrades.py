@@ -121,7 +121,7 @@ class Upgrade_slot:
             infotextRect.topleft = (self.pos[0] + 50,self.pos[1] + 10)
             screen.blit(infotext,infotextRect)
 
-        infotext = self.font.render("Level:%s"%(str(self.level)), 1, (0,0,0), None)
+        infotext = self.font.render("Level:%s/%s"%(str(self.level),str(self.max_level)), 1, (0,0,0), None)
         infotextRect = infotext.get_rect()
         infotextRect.topleft = (self.pos[0] + 50,self.pos[1] + 35)
         screen.blit(infotext,infotextRect)

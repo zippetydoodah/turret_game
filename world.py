@@ -20,6 +20,7 @@ class World:
 
         self.double_drops_slot = Effect_slot((WINDOW_WIDTH - 100,WINDOW_HEIGHT - 100), image_size=50, end_time = 30)
         self.freeze_time_slot = Effect_slot((WINDOW_WIDTH - 180,WINDOW_HEIGHT - 100), image_size=50, end_time = 10)
+        self.death_wait_time = None
 
         self.since_paused = None
         self.base_tile = None
@@ -30,6 +31,7 @@ class World:
         self.healers = []
         self.plants = []
         self.structs = []
+
         self.font = pygame.font.SysFont('Arial', 25)
 
     def reset_vars(self):
@@ -48,32 +50,67 @@ class World:
             self.wave_time = None
             self.wave += 1
             enemy = None
+
             if self.wave >= 15:
                 m = 1
+                a = 14
                 enemy = "Troll"
 
             if self.wave >= 50:
                 m = 0.5
+                a = 45
                 enemy = "Dragon"
 
-            elif self.wave < 15 :
+            if self.wave > 5 :
                 m = 2
+                a = 5
                 enemy = "Zombie"
 
-            chat.add_text("Round" + str(self.wave) + ":" + enemy + "x" + str(round(self.wave * m)) )
+            elif self.wave <= 5 :
+                m = 4
+                a = 0
+                enemy = "Minion"
 
-            for i in range(round(self.wave * m)):
-                x = random.choice([0,WINDOW_WIDTH])
-                y = random.randint(0,WINDOW_HEIGHT)
+            chat.add_text("Round" + str(self.wave) + ":" + enemy + "x" + str(round((self.wave - a) * m)))
 
-                if self.wave >= 50:
-                    self.enemies.append(Dragon((x,y),self.base_tile.pos))
+            if self.wave > 10:
+                n = random.choice([0,1,1])
+            else:
+                n = 1
 
-                elif self.wave >= 15:
-                    self.enemies.append(Troll((x,y),self.base_tile.pos))
+            if n:
+                for i in range(round((self.wave - a) * m)):
+                    x = random.choice([0,WINDOW_WIDTH])
+                    y = random.randint(0,WINDOW_HEIGHT)
 
-                else:
-                    self.enemies.append(Zombie((x,y),self.base_tile.pos))
+                    if self.wave >= 50:
+                        self.enemies.append(Dragon((x,y),self.base_tile.pos))
+
+                    elif self.wave >= 15:
+                        self.enemies.append(Troll((x,y),self.base_tile.pos))
+
+                    elif self.wave > 5:
+                        self.enemies.append(Zombie((x,y),self.base_tile.pos))
+
+                    elif self.wave <= 5 :
+                        self.enemies.append(Minion((x,y),self.base_tile.pos))
+
+            else:   
+                for i in range(round((self.wave - a) * m)):
+                    x = random.randint(0,WINDOW_WIDTH)
+                    y = random.choice([0,WINDOW_HEIGHT])
+
+                    if self.wave >= 50:
+                        self.enemies.append(Dragon((x,y),self.base_tile.pos))
+
+                    elif self.wave >= 15:
+                        self.enemies.append(Troll((x,y),self.base_tile.pos))
+
+                    elif self.wave > 5:
+                        self.enemies.append(Zombie((x,y),self.base_tile.pos))
+                        
+                    elif self.wave <= 5:
+                        self.enemies.append(Minion((x,y),self.base_tile.pos))
 
         to_remove = []
         for enemy in self.enemies:
@@ -111,9 +148,22 @@ class World:
         for e in to_remove:
             self.enemies.remove(e)
         
-    def is_alive(self):
-        return self.base_tile.base.check_death()
+    def is_alive(self,pause):
+        if not self.death_wait_time:
+            if self.base_tile.base.check_death():
+                return True
+            else:
+                self.death_wait_time = time.time()
+                return True
 
+        else:
+            pause.showing = True
+
+            if time.time() - self.death_wait_time > 10: 
+                return False
+            
+            return True
+        
     def skip_round(self):
         self.wave_time = WAIT_BETWEEN_WAVES
 
@@ -145,12 +195,8 @@ class World:
 
         for x in range(0, width):
             for y in range(0, height):
-                neighbors = [
-                    grid[x-1][y],
-                    grid[x][y-1],
-                    grid[x-1][y-1],
-
-                ]
+                neighbors = [grid[x-1][y],grid[x][y-1],grid[x-1][y-1]]
+                
                 if random.random() < 0.99:
                     grid[x][y] = random.choice(neighbors)
         tiles = []
@@ -702,6 +748,8 @@ class World:
         for t in to_render:
             if t.turret:
                 t.turret.health_bar.render(screen)
+                if settings.turret_stats.showing:
+                    t.turret.health_bar.render(screen,r = True)
             if t.wall:
                 t.wall.health_bar.render(screen)
 
